@@ -1,0 +1,76 @@
+#include "stm32f10x.h"
+#include "modbus.h"
+#include "GPIO.h"
+#include "pwm.h"
+
+
+
+unsigned short	array_mb[100]						= {};			// массив для хранения принятых/переданных слов
+
+unsigned short	state_machine						= 0;			// переменная состояния системы. выбор алгоритма работмы программы
+																	// 0 - ожидает выбор работы от пользователя. работает телеметрия по модбасу.
+																	// 1 - переход к выполнению выбранного режима работы.
+
+unsigned short threshold_U_zpt						= 200;			// переменная, для работы с уровнем напряжения ЗПТ
+unsigned short clamp_U_zpt 							= 0;			// защёлка, нужна для исключения отключения реле ЗПТ при просадке напряжения
+
+unsigned short Isens;												// переменные внутреннего пользования. маскируют такие же переменные из сетевого массива
+unsigned short U_zpt;
+unsigned short Un;
+unsigned short Ibreak;
+
+
+unsigned short Isens_threshold						= 33;
+
+signed short temperature_plate						= 23;
+signed short temperature_plate_threshold			= 60;
+signed short temperature_heater						= 30;
+signed short temperature_heater_threshold			= 100;
+
+unsigned short frequency_pwm						= 0;
+unsigned short deadtime_pwm							= 0;
+unsigned short set_out_voltage						= 0;
+
+unsigned short	buf_mbus1							= 0;
+
+
+
+
+
+int main(void)
+{
+
+
+	init_GPIO();
+    init_modbus();
+
+    init_pwm_PP_mode();
+
+
+    relay_1(off);
+    relay_2(off);
+
+    blue_led(off);
+    red_led(off);
+
+
+
+    //array_mb[0] = 0;								//
+
+
+
+
+
+
+
+
+	for(;;)
+	{
+
+
+		array_mb[8]++;								// счётчик проверки состояния связи
+
+		Modbus_slave();
+
+	} // скобка бесконечного цикла
+} // скобка мейна

@@ -1,6 +1,6 @@
-14:42:03 **** Incremental Build of configuration Debug for project STM32_PWM_RGB ****
+16:42:46 **** Incremental Build of configuration Debug for project STM32_PWM_RGB ****
 make -j4 all 
 make: Nothing to be done for 'all'.
 
-14:42:03 Build Finished (took 433ms)
+16:42:47 Build Finished (took 1s.47ms)
 
